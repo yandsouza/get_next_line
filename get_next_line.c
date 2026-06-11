@@ -6,7 +6,7 @@
 /*   By: ynascime <yannssouza@outlook.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 15:19:53 by ynascime          #+#    #+#             */
-/*   Updated: 2026/06/11 13:23:07 by ynascime         ###   ########.fr       */
+/*   Updated: 2026/06/11 17:31:35 by ynascime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,11 @@ char *next_line(char *stash)
 	char *next;
 	int next_len;
 	int i;
+	
+	if (!stash)
+		return (0);
 
+	i = 0;
 	next = malloc(sizeof(char) * (ft_strlen(stash) + 2));	
 	while (stash[i] != '\0' && stash[i] != '\n')
 	{
