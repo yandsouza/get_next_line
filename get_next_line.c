@@ -80,12 +80,15 @@ int	main(int argc, char **argv)
 {
 	if (argc > 1)
 	{
-		int fd;
-		char *buf;
-
-    	fd = open(argv[1], O_RDONLY);
-		buf = get_next_line(fd);
-		printf("%s", buf);
+		int fd = open(argv[1], O_RDONLY);
+		char	*line;
+		while ((line = get_next_line(fd)))
+		{
+			if (!line)
+				break;
+			printf("%s", line);
+			free(line);
+		}
 	}
 	return (0);
 }

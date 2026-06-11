@@ -24,22 +24,26 @@ static size_t	ft_strlen(const char *s)
 	return (size);
 }
 
-char	*ft_strdup(const char *s)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int		i;
-	int		len;
-	char	*dup;
+	char	*dst;
+	size_t	s1_len;
+	size_t	s2_len;
+	size_t	i;
+	size_t	e;
 
-	if (s == NULL)
-		return (NULL);
-	len = ft_strlen(s);
-	dup = malloc(len * sizeof(char) + 1);
+	s1_len = ft_strlen(s1);
+	s2_len = ft_strlen(s2);
+	dst = malloc(s1_len + s2_len + 1);
+	if (!dst)
+		return (0);
 	i = 0;
-	while (s[i] != '\0')
-	{
-		dup[i] = s[i];
-		i++;
-	}
-	dup[i] = '\0';
-	return (dup);
+	e = 0;
+	while (s1[i] != '\0')
+		dst[e++] = s1[i++];
+	i = 0;
+	while (s2[i] != '\0')
+		dst[e++] = s2[i++];
+	dst[e] = '\0';
+	return (dst);
 }
