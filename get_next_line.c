@@ -14,20 +14,21 @@
 
 char *get_next_line(int fd)
 {
-	char *buf;
+	char *line;
 	static char *stash;
-	int i;
+	char *buff;
+	int buff_size;
 
-	buf = malloc(sizeof(char) * 1248);
-	read(fd, buf, 1248);
-	stash = ft_strdup(buf);
-	i = 0;
-	while (stash[i] != '\0')
+	if (stash)
 	{
-		if (stash[i] == '\n')
-			stash[i] = '\0';
-		i++;
+		stash = NULL;
+		return (stash);
 	}
+
+	buff = malloc(sizeof(char) * 12);
+	buff_size = read(fd, line, 12);
+	buff[buff_size] = '\0';
+	stash = ft_strjoin(buff, line);
 	return (stash);
 }
 #include <stdio.h>
@@ -36,12 +37,15 @@ int	main(int argc, char **argv)
 {
 	if (argc > 1)
 	{
-		int fd;
-		char *buf;
-
-    	fd = open(argv[1], O_RDONLY);
-		buf = get_next_line(fd);
-		printf("%s", buf);
+		int fd = open(argv[1], O_RDONLY);
+		char	*line;
+		while ((line = get_next_line(fd)))
+		{
+			if (!line)
+				break;
+			printf("%s", line);
+			free(line);
+		}
 	}
 	return (0);
 }
