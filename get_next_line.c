@@ -16,6 +16,8 @@ size_t	ft_strlen(const char *s)
 {
 	size_t	size;
 
+	if (!s)
+		return (0);
 	size = 0;
 	while (s[size] != '\0')
 	{
@@ -24,9 +26,26 @@ size_t	ft_strlen(const char *s)
 	return (size);
 }
 
-//char *trim_line(char* stash)
-//{
-//}
+char *trim_line(char* stash)
+{
+	int i;
+	int e;
+	char *new_stash;
+
+	i = 0;
+	while(stash[i] != '\0' && stash[i] != '\n')
+		i++;
+	if (!stash[i])
+		return (0);
+	i++;
+	new_stash = malloc(sizeof(char) * (ft_strlen(stash) - i + 1));
+	e = 0;
+	while (stash[i] != '\0')
+		new_stash[e++] = stash[i++];
+	new_stash[e] = '\0';
+	free(stash);
+	return (new_stash);
+}
 
 char *next_line(char *stash)
 {
@@ -55,15 +74,12 @@ char *allocate_line(int fd, char *stash)
 	char *buffer;
 	size_t buf_size;
 	
-	if (stash)
-	{
-		stash = NULL;
-		return (stash);
-	}
 	buffer = malloc(11);
 	buf_size = read(fd, buffer, 11);
+	if (buf_size == 0)
+		return (0);
 	buffer[buf_size] = '\0';
-	stash = buffer;
+	stash = ft_strjoin(stash, buffer);
 	return (stash);
 }
 
@@ -73,8 +89,10 @@ char *get_next_line(int fd)
 	static char *stash;
 	
 	stash = allocate_line(fd, stash);
+	if (!stash)
+		return (0);
 	line = next_line(stash);
-//	stash = trim_line(stash);
+	stash = trim_line(stash);
 	return (line);
 }
 
