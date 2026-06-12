@@ -6,7 +6,7 @@
 /*   By: ynascime <yannssouza@outlook.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 15:19:53 by ynascime          #+#    #+#             */
-/*   Updated: 2026/06/12 16:18:00 by ynascime         ###   ########.fr       */
+/*   Updated: 2026/06/12 17:59:19 by ynascime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,11 @@ char *allocate_line(int fd, char *stash)
 	size_t buf_size;
 	
 	buffer = malloc(BUFFER_SIZE);
-	if (buf_size == 0)
-		return (0);
-	buf_size = 1;
-	while (!(ft_strchr(buffer, '\n')))
+	while (!ft_strchr(stash, '\n'))
 	{
 		buf_size = read(fd, buffer, BUFFER_SIZE);
+		if (buf_size == 0)
+			return (0);
 		buffer[buf_size] = '\0';
 		stash = ft_strjoin(stash, buffer);
 	}
@@ -33,12 +32,8 @@ char *allocate_line(int fd, char *stash)
 char *next_line(char *stash)
 {
 	char *next;
-	int next_len;
 	int i;
 	
-	if (!stash)
-		return (0);
-
 	i = 0;
 	next = malloc(sizeof(char) * (ft_strlen(stash) + 2));	
 	while (stash[i] != '\0' && stash[i] != '\n')
@@ -61,8 +56,6 @@ char *trim_line(char* stash)
 	i = 0;
 	while(stash[i] != '\0' && stash[i] != '\n')
 		i++;
-	if (!stash[i])
-		return (0);
 	i++;
 	new_stash = malloc(sizeof(char) * (ft_strlen(stash) - i + 1));
 	e = 0;
