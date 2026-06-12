@@ -6,17 +6,17 @@
 /*   By: ynascime <yannssouza@outlook.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 15:19:53 by ynascime          #+#    #+#             */
-/*   Updated: 2026/06/12 17:59:19 by ynascime         ###   ########.fr       */
+/*   Updated: 2026/06/12 18:30:35 by ynascime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char *allocate_line(int fd, char *stash)
+char	*allocate_line(int fd, char *stash)
 {
-	char *buffer;
-	size_t buf_size;
-	
+	char	*buffer;
+	size_t	buf_size;
+
 	buffer = malloc(BUFFER_SIZE);
 	while (!ft_strchr(stash, '\n'))
 	{
@@ -29,32 +29,32 @@ char *allocate_line(int fd, char *stash)
 	return (stash);
 }
 
-char *next_line(char *stash)
+char	*next_line(char *stash)
 {
-	char *next;
-	int i;
-	
+	char	*next;
+	int		i;
+
 	i = 0;
-	next = malloc(sizeof(char) * (ft_strlen(stash) + 2));	
+	next = malloc(sizeof(char) * (ft_strlen(stash) + 2));
 	while (stash[i] != '\0' && stash[i] != '\n')
 	{
-		next[i] = stash[i];	
+		next[i] = stash[i];
 		i++;
 	}
 	next[i] = '\n';
 	i++;
 	next[i] = '\0';
-	return (next);	
+	return (next);
 }
 
-char *trim_line(char* stash)
+char	*trim_line(char *stash)
 {
-	int i;
-	int e;
-	char *new_stash;
+	int		i;
+	int		e;
+	char	*new_stash;
 
 	i = 0;
-	while(stash[i] != '\0' && stash[i] != '\n')
+	while (stash[i] != '\0' && stash[i] != '\n')
 		i++;
 	i++;
 	new_stash = malloc(sizeof(char) * (ft_strlen(stash) - i + 1));
@@ -66,11 +66,11 @@ char *trim_line(char* stash)
 	return (new_stash);
 }
 
-char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
-	char *line;
-	static char *stash;
-	
+	char		*line;
+	static char	*stash;
+
 	stash = allocate_line(fd, stash);
 	if (!stash)
 		return (0);
@@ -78,22 +78,21 @@ char *get_next_line(int fd)
 	stash = trim_line(stash);
 	return (line);
 }
-
-#include <stdio.h>
-#include <fcntl.h>
-int	main(int argc, char **argv)
-{
-	if (argc > 1)
-	{
-		int fd = open(argv[1], O_RDONLY);
-		char	*line;
-		while ((line = get_next_line(fd)))
-		{
-			if (!line)
-				break;
-			printf("%s", line);
-			free(line);
-		}
-	}
-	return (0);
-}
+//#include <stdio.h>
+//#include <fcntl.h>
+//int	main(int argc, char **argv)
+//{
+//	if (argc > 1)
+//	{
+//		int fd = open(argv[1], O_RDONLY);
+//		char	*line;
+//		while ((line = get_next_line(fd)))
+//		{
+//			if (!line)
+//				break;
+//			printf("%s", line);
+//			free(line);
+//		}
+//	}
+//	return (0);
+//}

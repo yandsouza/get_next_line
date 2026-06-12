@@ -6,7 +6,7 @@
 /*   By: ynascime <yannssouza@outlook.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 17:41:54 by ynascime          #+#    #+#             */
-/*   Updated: 2026/06/12 17:18:24 by ynascime         ###   ########.fr       */
+/*   Updated: 2026/06/12 18:33:37 by ynascime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ char	*ft_strchr(const char *s, int c)
 char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*dst;
-	size_t	s1_len;
-	size_t	s2_len;
 	size_t	i;
 	size_t	e;
 
@@ -57,9 +55,7 @@ char	*ft_strjoin(char *s1, char *s2)
 			return (NULL);
 		s1[0] = '\0';
 	}
-	s1_len = ft_strlen(s1);
-	s2_len = ft_strlen(s2);
-	dst = malloc(s1_len + s2_len + 1);
+	dst = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!dst)
 		return (0);
 	i = 0;
