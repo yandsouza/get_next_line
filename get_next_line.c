@@ -6,45 +6,28 @@
 /*   By: ynascime <yannssouza@outlook.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 15:19:53 by ynascime          #+#    #+#             */
-/*   Updated: 2026/06/11 17:31:35 by ynascime         ###   ########.fr       */
+/*   Updated: 2026/06/12 16:18:00 by ynascime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *s)
+char *allocate_line(int fd, char *stash)
 {
-	size_t	size;
-
-	if (!s)
+	char *buffer;
+	size_t buf_size;
+	
+	buffer = malloc(BUFFER_SIZE);
+	if (buf_size == 0)
 		return (0);
-	size = 0;
-	while (s[size] != '\0')
+	buf_size = 1;
+	while (!(ft_strchr(buffer, '\n')))
 	{
-		size++;
+		buf_size = read(fd, buffer, BUFFER_SIZE);
+		buffer[buf_size] = '\0';
+		stash = ft_strjoin(stash, buffer);
 	}
-	return (size);
-}
-
-char *trim_line(char* stash)
-{
-	int i;
-	int e;
-	char *new_stash;
-
-	i = 0;
-	while(stash[i] != '\0' && stash[i] != '\n')
-		i++;
-	if (!stash[i])
-		return (0);
-	i++;
-	new_stash = malloc(sizeof(char) * (ft_strlen(stash) - i + 1));
-	e = 0;
-	while (stash[i] != '\0')
-		new_stash[e++] = stash[i++];
-	new_stash[e] = '\0';
-	free(stash);
-	return (new_stash);
+	return (stash);
 }
 
 char *next_line(char *stash)
@@ -69,18 +52,25 @@ char *next_line(char *stash)
 	return (next);	
 }
 
-char *allocate_line(int fd, char *stash)
+char *trim_line(char* stash)
 {
-	char *buffer;
-	size_t buf_size;
-	
-	buffer = malloc(11);
-	buf_size = read(fd, buffer, 11);
-	if (buf_size == 0)
+	int i;
+	int e;
+	char *new_stash;
+
+	i = 0;
+	while(stash[i] != '\0' && stash[i] != '\n')
+		i++;
+	if (!stash[i])
 		return (0);
-	buffer[buf_size] = '\0';
-	stash = ft_strjoin(stash, buffer);
-	return (stash);
+	i++;
+	new_stash = malloc(sizeof(char) * (ft_strlen(stash) - i + 1));
+	e = 0;
+	while (stash[i] != '\0')
+		new_stash[e++] = stash[i++];
+	new_stash[e] = '\0';
+	free(stash);
+	return (new_stash);
 }
 
 char *get_next_line(int fd)
