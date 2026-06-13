@@ -17,15 +17,27 @@ char	*allocate_line(int fd, char *stash)
 	char	*buffer;
 	size_t	buf_size;
 
-	buffer = malloc(BUFFER_SIZE);
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (0);
 	while (!ft_strchr(stash, '\n'))
 	{
 		buf_size = read(fd, buffer, BUFFER_SIZE);
 		if (buf_size == 0)
+		{
+			free(buffer);
+			free(stash);
 			return (0);
+		}
 		buffer[buf_size] = '\0';
 		stash = ft_strjoin(stash, buffer);
+		if (!stash)
+		{
+			free(buffer);
+			return (0);
+		}
 	}
+	free(buffer);
 	return (stash);
 }
 
